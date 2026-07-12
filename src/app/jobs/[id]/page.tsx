@@ -3,7 +3,6 @@ import { notFound } from "next/navigation";
 
 import Navbar from "@/components/shared/Navbar";
 import Footer from "@/components/shared/Footer";
-import { jobs } from "@/data/jobs";
 
 type Props = {
   params: Promise<{
@@ -11,14 +10,32 @@ type Props = {
   }>;
 };
 
+type Job = {
+  _id: string;
+  title: string;
+  company: string;
+  location: string;
+  jobType: string;
+  salary: string;
+  description: string;
+  requirements: string;
+  image: string;
+};
+
 export default async function JobDetailsPage({
   params,
 }: Props) {
   const { id } = await params;
 
-  const job = jobs.find(
-    (item) => item.id === Number(id)
-  );
+  const res = await fetch(`http://localhost:5000/jobs/${id}`, {
+    cache: "no-store",
+  });
+
+  if (!res.ok) {
+    notFound();
+  }
+
+  const job: Job = await res.json();
 
   if (!job) {
     notFound();
@@ -30,14 +47,16 @@ export default async function JobDetailsPage({
 
       <section className="bg-white py-20 dark:bg-gray-950">
         <div className="mx-auto max-w-6xl px-6">
+
           <Link
             href="/jobs"
-            className="mb-8 inline-flex rounded-lg border px-4 py-2 transition hover:bg-gray-100 dark:hover:bg-gray-800"
+            className="mb-8 inline-flex rounded-lg border px-4 py-2 transition hover:bg-gray-100 dark:border-gray-700 dark:hover:bg-gray-800"
           >
             ← Back to Jobs
           </Link>
 
           <div className="overflow-hidden rounded-3xl border bg-gray-50 shadow-lg dark:border-gray-800 dark:bg-gray-900">
+
             <img
               src={job.image}
               alt={job.title}
@@ -45,62 +64,102 @@ export default async function JobDetailsPage({
             />
 
             <div className="p-8">
-              <span className="rounded-full bg-blue-100 px-3 py-1 text-sm font-semibold text-blue-600 dark:bg-blue-950">
-                {job.category}
+
+              <span className="rounded-full bg-blue-100 px-3 py-1 text-sm font-semibold text-blue-600 dark:bg-blue-900 dark:text-blue-300">
+                {job.jobType}
               </span>
 
               <h1 className="mt-4 text-4xl font-bold text-gray-900 dark:text-white">
                 {job.title}
               </h1>
 
-              <div className="mt-6 grid gap-4 md:grid-cols-2">
-                <div className="rounded-xl border p-4">
-                  <h3 className="font-semibold">Company</h3>
-                  <p>{job.company}</p>
+              <div className="mt-8 grid gap-4 md:grid-cols-2">
+
+                <div className="rounded-xl border p-4 dark:border-gray-700">
+                  <h3 className="font-semibold text-gray-900 dark:text-white">
+                    Company
+                  </h3>
+
+                  <p className="mt-2 text-gray-600 dark:text-gray-400">
+                    {job.company}
+                  </p>
                 </div>
 
-                <div className="rounded-xl border p-4">
-                  <h3 className="font-semibold">Location</h3>
-                  <p>{job.location}</p>
+                <div className="rounded-xl border p-4 dark:border-gray-700">
+                  <h3 className="font-semibold text-gray-900 dark:text-white">
+                    Location
+                  </h3>
+
+                  <p className="mt-2 text-gray-600 dark:text-gray-400">
+                    {job.location}
+                  </p>
                 </div>
 
-                <div className="rounded-xl border p-4">
-                  <h3 className="font-semibold">Job Type</h3>
-                  <p>{job.type}</p>
+                <div className="rounded-xl border p-4 dark:border-gray-700">
+                  <h3 className="font-semibold text-gray-900 dark:text-white">
+                    Job Type
+                  </h3>
+
+                  <p className="mt-2 text-gray-600 dark:text-gray-400">
+                    {job.jobType}
+                  </p>
                 </div>
 
-                <div className="rounded-xl border p-4">
-                  <h3 className="font-semibold">Salary</h3>
-                  <p className="font-bold text-blue-600">
+                <div className="rounded-xl border p-4 dark:border-gray-700">
+                  <h3 className="font-semibold text-gray-900 dark:text-white">
+                    Salary
+                  </h3>
+
+                  <p className="mt-2 text-xl font-bold text-blue-600">
                     {job.salary}
                   </p>
                 </div>
+
               </div>
 
               <div className="mt-10">
-                <h2 className="text-2xl font-bold">
+
+                <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
                   Job Description
                 </h2>
 
                 <p className="mt-4 leading-8 text-gray-600 dark:text-gray-400">
                   {job.description}
                 </p>
+
+              </div>
+
+              <div className="mt-10">
+
+                <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
+                  Requirements
+                </h2>
+
+                <p className="mt-4 leading-8 text-gray-600 dark:text-gray-400">
+                  {job.requirements}
+                </p>
+
               </div>
 
               <div className="mt-10 flex flex-wrap gap-4">
+
                 <button className="rounded-xl bg-blue-600 px-8 py-3 font-semibold text-white transition hover:bg-blue-700">
                   Apply Now
                 </button>
 
                 <Link
                   href="/jobs"
-                  className="rounded-xl border px-8 py-3 font-semibold transition hover:bg-gray-100 dark:hover:bg-gray-800"
+                  className="rounded-xl border px-8 py-3 font-semibold transition hover:bg-gray-100 dark:border-gray-700 dark:text-white dark:hover:bg-gray-800"
                 >
                   Browse More Jobs
                 </Link>
+
               </div>
+
             </div>
+
           </div>
+
         </div>
       </section>
 
