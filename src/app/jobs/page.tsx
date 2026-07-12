@@ -11,14 +11,17 @@ import JobList from "@/components/jobs/JobList";
 
 
 export type Job = {
-  _id: string;
+ _id: string;
   title: string;
   company: string;
+  category: string;
   location: string;
   jobType: string;
   salary: string;
   description: string;
   requirements: string;
+  image: string;
+  createdAt?: string;
 };
 
 

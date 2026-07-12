@@ -5,6 +5,7 @@ import { useState } from "react";
 type JobData = {
   title: string;
   company: string;
+    category: string;
   location: string;
   jobType: string;
   salary: string;
@@ -17,6 +18,7 @@ export default function AddJobPage() {
   const [jobData, setJobData] = useState<JobData>({
     title: "",
     company: "",
+     category: "",
     location: "",
     jobType: "",
     salary: "",
@@ -70,6 +72,7 @@ const handleSubmit = async (e: React.FormEvent) => {
       setJobData({
         title: "",
         company: "",
+         category: "",
         location: "",
         jobType: "",
         salary: "",
@@ -221,6 +224,32 @@ const handleSubmit = async (e: React.FormEvent) => {
             />
 
           </div>
+
+
+
+          <div>
+  <label className="font-medium">
+    Category
+  </label>
+
+  <select
+    name="category"
+    value={jobData.category}
+    onChange={handleChange}
+    className="w-full mt-2 border rounded-lg px-4 py-3"
+  >
+    <option value="">Select Category</option>
+    <option value="Frontend">Frontend</option>
+    <option value="Backend">Backend</option>
+    <option value="Full Stack">Full Stack</option>
+    <option value="Design">Design</option>
+    <option value="DevOps">DevOps</option>
+    <option value="Mobile">Mobile</option>
+    <option value="Data">Data</option>
+    <option value="Cloud">Cloud</option>
+    <option value="AI">AI</option>
+  </select>
+</div>
 
 
 
