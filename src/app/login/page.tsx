@@ -1,9 +1,14 @@
+// "use client";
+
+
+
 "use client";
 
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { FcGoogle } from "react-icons/fc";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 import toast from "react-hot-toast";
 import { authClient } from "@/lib/auth-client";
 
@@ -11,10 +16,16 @@ export default function LoginPage() {
   const router = useRouter();
 
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] =
+    useState(false);
 
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [password, setPassword] =
+    useState("");
 
+  // ==========================
+  // Login
+  // ==========================
   const handleLogin = async (
     e: React.FormEvent<HTMLFormElement>
   ) => {
@@ -24,13 +35,27 @@ export default function LoginPage() {
       return toast.error("Please fill all fields");
     }
 
+    const emailRegex =
+      /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!emailRegex.test(email)) {
+      return toast.error("Invalid email address");
+    }
+
+    if (password.length < 6) {
+      return toast.error(
+        "Password must be at least 6 characters"
+      );
+    }
+
     setLoading(true);
 
     try {
-      const { data, error } = await authClient.signIn.email({
-        email,
-        password,
-      });
+      const { error } =
+        await authClient.signIn.email({
+          email,
+          password,
+        });
 
       if (error) {
         toast.error(error.message ?? "Login Failed");
@@ -40,21 +65,54 @@ export default function LoginPage() {
       toast.success("Login Successful!");
 
       router.push("/");
-    } catch (error) {
+    } catch {
       toast.error("Something went wrong");
     } finally {
       setLoading(false);
     }
   };
 
+  // ==========================
+  // Google Login
+  // ==========================
   const handleGoogleLogin = async () => {
     try {
       await authClient.signIn.social({
         provider: "google",
         callbackURL: "/",
       });
-    } catch (error) {
+    } catch {
       toast.error("Google Login Failed");
+    }
+  };
+
+  // ==========================
+  // Demo Login
+  // ==========================
+  const handleDemoLogin = async () => {
+    const demoEmail = "demo@nexthire.com";
+    const demoPassword = "demo@nexthire.com";
+
+    setEmail(demoEmail);
+    setPassword(demoPassword);
+
+    try {
+      const { error } =
+        await authClient.signIn.email({
+          email: demoEmail,
+          password: demoPassword,
+        });
+
+      if (error) {
+        toast.error(error.message ?? "Demo Login Failed");
+        return;
+      }
+
+      toast.success("Demo Login Successful");
+
+      router.push("/");
+    } catch {
+      toast.error("Something went wrong");
     }
   };
 
@@ -66,7 +124,7 @@ export default function LoginPage() {
           Welcome Back
         </h1>
 
-        <p className="mt-2 text-center text-gray-500">
+        <p className="mt-2 text-center text-gray-500 dark:text-gray-400">
           Login to your NextHire account
         </p>
 
@@ -74,47 +132,98 @@ export default function LoginPage() {
           onSubmit={handleLogin}
           className="mt-6 space-y-4"
         >
+          {/* Email */}
           <input
             type="email"
-            placeholder="Email"
+            placeholder="Email Address"
             className="w-full rounded-lg border p-3 outline-none focus:border-blue-600 dark:bg-slate-900"
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
+            onChange={(e) =>
+              setEmail(e.target.value)
+            }
           />
 
-          <input
-            type="password"
-            placeholder="Password"
-            className="w-full rounded-lg border p-3 outline-none focus:border-blue-600 dark:bg-slate-900"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
+          {/* Password */}
+          <div className="relative">
+            <input
+              type={
+                showPassword
+                  ? "text"
+                  : "password"
+              }
+              placeholder="Password"
+              className="w-full rounded-lg border p-3 pr-12 outline-none focus:border-blue-600 dark:bg-slate-900"
+              value={password}
+              onChange={(e) =>
+                setPassword(e.target.value)
+              }
+            />
 
+            <button
+              type="button"
+              onClick={() =>
+                setShowPassword(
+                  !showPassword
+                )
+              }
+              className="absolute right-4 top-1/2 -translate-y-1/2"
+            >
+              {showPassword ? (
+                <FaEyeSlash />
+              ) : (
+                <FaEye />
+              )}
+            </button>
+          </div>
+
+          {/* Forgot Password */}
+          <div className="text-right">
+            <Link
+              href="/forgot-password"
+              className="text-sm text-blue-600 hover:underline"
+            >
+              Forgot Password?
+            </Link>
+          </div>
+
+          {/* Login Button */}
           <button
             type="submit"
             disabled={loading}
-            className="w-full rounded-lg bg-blue-600 py-3 font-semibold text-white transition hover:bg-blue-700"
+            className="w-full rounded-lg bg-blue-600 py-3 font-semibold text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-70"
           >
-            {loading ? "Signing In..." : "Login"}
+            {loading
+              ? "Signing In..."
+              : "Login"}
           </button>
         </form>
 
+        {/* OR */}
         <div className="my-6 flex items-center gap-3">
           <div className="h-px flex-1 bg-gray-300"></div>
+
           <span className="text-sm text-gray-500">
             OR
           </span>
+
           <div className="h-px flex-1 bg-gray-300"></div>
         </div>
 
+        {/* Google */}
         <button
           onClick={handleGoogleLogin}
-          className="flex w-full items-center justify-center gap-3 rounded-lg border py-3 transition hover:bg-gray-100 dark:hover:bg-slate-700"
+          className="mb-3 flex w-full items-center justify-center gap-3 rounded-lg border py-3 transition hover:bg-gray-100 dark:hover:bg-slate-700"
         >
           <FcGoogle className="text-2xl" />
           Continue with Google
+        </button>
+
+        {/* Demo Login */}
+        <button
+          onClick={handleDemoLogin}
+          className="w-full rounded-lg border border-indigo-600 py-3 font-semibold text-indigo-600 transition hover:bg-indigo-600 hover:text-white"
+        >
+          Demo Login
         </button>
 
         <p className="mt-6 text-center text-sm">

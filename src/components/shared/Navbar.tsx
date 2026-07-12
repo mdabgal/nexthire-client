@@ -3,7 +3,7 @@
 import ThemeToggle from "@/provider/ThemeProvider";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { authClient } from "@/lib/auth-client";
 import toast from "react-hot-toast";
 import { LogOut } from "lucide-react";
@@ -37,6 +37,20 @@ export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
 
   const { data: session } = authClient.useSession();
+  const [role, setRole] = useState("");
+
+
+  useEffect(() => {
+  if (session?.user?.email) {
+    fetch(
+      `http://localhost:5000/users/${session.user.email}`
+    )
+      .then((res) => res.json())
+      .then((data) => {
+        setRole(data.role);
+      });
+  }
+}, [session]);
 
 const handleLogout = async () => {
   await authClient.signOut();
@@ -76,6 +90,33 @@ const handleLogout = async () => {
               )}
             </Link>
           ))}
+
+{session && role === "employer" && (
+  <>
+    <Link href="/jobs/add">Add Job</Link>
+
+    <Link href="/jobs/manage">
+      Manage Jobs
+    </Link>
+
+    <Link href="/dashboard">
+      Dashboard
+    </Link>
+
+    <Link href="/applications">
+      Applications
+    </Link>
+  </>
+)}
+
+{session && role === "job-seeker" && (
+  <Link href="/my-applications">
+    My Applications
+  </Link>
+)}
+
+
+
         </nav>
 
 
@@ -159,12 +200,62 @@ const handleLogout = async () => {
 
 {!session ? (
   <>
-    <Link href="/login">Login</Link>
-    <Link href="/register">Register</Link>
+    <Link
+      href="/login"
+      onClick={() => setIsOpen(false)}
+    >
+      Login
+    </Link>
+
+    <Link
+      href="/register"
+      onClick={() => setIsOpen(false)}
+    >
+      Register
+    </Link>
   </>
 ) : (
   <>
-    
+    {role === "employer" && (
+      <>
+        <Link
+          href="/jobs/add"
+          onClick={() => setIsOpen(false)}
+        >
+          Add Job
+        </Link>
+
+        <Link
+          href="/jobs/manage"
+          onClick={() => setIsOpen(false)}
+        >
+          Manage Jobs
+        </Link>
+
+        <Link
+          href="/dashboard"
+          onClick={() => setIsOpen(false)}
+        >
+          Dashboard
+        </Link>
+
+        <Link
+          href="/applications"
+          onClick={() => setIsOpen(false)}
+        >
+          Applications
+        </Link>
+      </>
+    )}
+
+    {role === "job-seeker" && (
+      <Link
+        href="/my-applications"
+        onClick={() => setIsOpen(false)}
+      >
+        My Applications
+      </Link>
+    )}
 
     <button onClick={handleLogout}>
       Logout

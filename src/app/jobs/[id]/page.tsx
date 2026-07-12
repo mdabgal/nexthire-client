@@ -142,11 +142,12 @@ export default async function JobDetailsPage({
               </div>
 
               <div className="mt-10 flex flex-wrap gap-4">
-
-                <button className="rounded-xl bg-blue-600 px-8 py-3 font-semibold text-white transition hover:bg-blue-700">
-                  Apply Now
-                </button>
-
+<Link
+  href={`/jobs/apply/${job._id}`}
+  className="rounded-xl bg-blue-600 px-8 py-3 font-semibold text-white"
+>
+  Apply Now
+</Link>
                 <Link
                   href="/jobs"
                   className="rounded-xl border px-8 py-3 font-semibold transition hover:bg-gray-100 dark:border-gray-700 dark:text-white dark:hover:bg-gray-800"
