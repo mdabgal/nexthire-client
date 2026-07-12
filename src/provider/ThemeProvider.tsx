@@ -28,7 +28,7 @@ export default function ThemeToggle() {
         <Sun size={20} />
       ) : (
         <Moon size={20} />
-      )}
+      )}   
     </button>
   );
 }

@@ -4,6 +4,9 @@ import ThemeToggle from "@/provider/ThemeProvider";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
+import { authClient } from "@/lib/auth-client";
+import toast from "react-hot-toast";
+import { LogOut } from "lucide-react";
 
 
 const navLinks = [
@@ -32,6 +35,14 @@ const navLinks = [
 export default function Navbar() {
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
+
+  const { data: session } = authClient.useSession();
+
+const handleLogout = async () => {
+  await authClient.signOut();
+  toast.success("Logged out successfully");
+  window.location.href = "/";
+};
 
   return (
     <header className="sticky top-0 z-50 border-b bg-white/80 backdrop-blur dark:border-gray-800 dark:bg-slate-950/80">
@@ -69,29 +80,41 @@ export default function Navbar() {
 
 
         {/* Desktop Actions */}
-        <div className="hidden items-center gap-3 md:flex">
+    <div className="hidden items-center gap-4 md:flex">
+  <ThemeToggle />
 
-          {/* Theme Button */}
-          <ThemeToggle />
+  {!session ? (
+    <>
+      <Link
+        href="/login"
+        className="rounded-lg border border-blue-600 px-5 py-2 font-medium text-blue-600 hover:bg-blue-600 hover:text-white"
+      >
+        Login
+      </Link>
 
-          {/* Login */}
-          <Link
-            href="/login"
-            className="rounded-lg border border-blue-600 px-5 py-2 font-medium text-blue-600 transition hover:bg-blue-600 hover:text-white"
-          >
-            Login
-          </Link>
+      <Link
+        href="/register"
+        className="rounded-lg bg-blue-600 px-5 py-2 font-medium text-white hover:bg-blue-700"
+      >
+        Register
+      </Link>
+    </>
+  ) : (
+    <>
+   
 
+      <img
+        src={session.user.image || "/user.png"}
+        alt="user"
+        className="h-10 w-10 rounded-full border"
+      />
 
-          {/* Register */}
-          <Link
-            href="/register"
-            className="rounded-lg bg-blue-600 px-5 py-2 font-medium text-white transition hover:bg-blue-700"
-          >
-            Register
-          </Link>
-
-        </div>
+      <button onClick={handleLogout}>
+        <LogOut />
+      </button>
+    </>
+  )}
+</div>
 
 
         {/* Mobile Buttons */}
@@ -134,21 +157,20 @@ export default function Navbar() {
               </Link>
             ))}
 
+{!session ? (
+  <>
+    <Link href="/login">Login</Link>
+    <Link href="/register">Register</Link>
+  </>
+) : (
+  <>
+    
 
-            <Link
-              href="/login"
-              className="mt-3 rounded-lg border border-blue-600 py-3 text-center font-medium text-blue-600"
-            >
-              Login
-            </Link>
-
-
-            <Link
-              href="/register"
-              className="rounded-lg bg-blue-600 py-3 text-center font-medium text-white"
-            >
-              Register
-            </Link>
+    <button onClick={handleLogout}>
+      Logout
+    </button>
+  </>
+)}
 
 
           </nav>

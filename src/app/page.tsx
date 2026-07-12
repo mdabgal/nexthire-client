@@ -1,6 +1,7 @@
 
 
 import CTA from "@/components/home/CTA";
+import FeaturedJobs from "@/components/home/FeaturedJobs";
 import Features from "@/components/home/Features";
 import Hero from "@/components/home/Hero";
 import JobCategories from "@/components/home/JobCategories";
@@ -16,6 +17,7 @@ export default function Home() {
       
       <Navbar></Navbar>
       <Hero></Hero>
+      <FeaturedJobs/>
       <Features/>
       <JobCategories/>
       <Statistics/>
