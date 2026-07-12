@@ -226,9 +226,8 @@ const handleSubmit = async (e: React.FormEvent) => {
           </div>
 
 
-
-          <div>
-  <label className="font-medium">
+<div>
+  <label className="font-medium text-gray-800 dark:text-gray-200">
     Category
   </label>
 
@@ -236,7 +235,23 @@ const handleSubmit = async (e: React.FormEvent) => {
     name="category"
     value={jobData.category}
     onChange={handleChange}
-    className="w-full mt-2 border rounded-lg px-4 py-3"
+    className="
+      w-full
+      mt-2
+      border
+      rounded-lg
+      px-4
+      py-3
+      bg-white
+      dark:bg-gray-700
+      text-gray-900
+      dark:text-white
+      border-gray-300
+      dark:border-gray-600
+      focus:outline-none
+      focus:ring-2
+      focus:ring-indigo-500
+    "
   >
     <option value="">Select Category</option>
     <option value="Frontend">Frontend</option>
@@ -250,7 +265,6 @@ const handleSubmit = async (e: React.FormEvent) => {
     <option value="AI">AI</option>
   </select>
 </div>
-
 
 
           {/* Location */}
