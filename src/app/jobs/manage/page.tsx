@@ -5,6 +5,7 @@ import Link from "next/link";
 
 import Navbar from "@/components/shared/Navbar";
 import Footer from "@/components/shared/Footer";
+import toast from "react-hot-toast";
 
 type Job = {
   _id: string;
@@ -20,6 +21,39 @@ type Job = {
 export default function ManageJobsPage() {
   const [jobs, setJobs] = useState<Job[]>([]);
   const [loading, setLoading] = useState(true);
+const [selectedJobId, setSelectedJobId] = useState<string | null>(null);
+const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+
+
+
+  const handleDelete = async () => {
+  if (!selectedJobId) return;
+
+  try {
+    const res = await fetch(
+      `http://localhost:5000/jobs/${selectedJobId}`,
+      {
+        method: "DELETE",
+      }
+    );
+
+    const data = await res.json();
+
+    if (data.success) {
+      setJobs((prev) =>
+        prev.filter((job) => job._id !== selectedJobId)
+      );
+
+      toast.success("Job deleted successfully!");
+
+      setIsDeleteOpen(false);
+      setSelectedJobId(null);
+    }
+  } catch (error) {
+    console.log(error);
+    toast.error("Delete failed!");
+  }
+};
 
   useEffect(() => {
     fetch("http://localhost:5000/jobs")
@@ -118,23 +152,61 @@ export default function ManageJobsPage() {
                     <div className="flex gap-3 pt-3">
                       <Link
                         href={`/jobs/edit/${job._id}`}
-                        className="flex-1 rounded-lg bg-green-600 py-2 text-center font-semibold text-white hover:bg-green-700"
+                        className="flex-1 rounded-lg bg-blue-600 py-2 text-center font-semibold text-white hover:bg-green-700"
                       >
                         Edit
                       </Link>
 
-                      <button
-                        className="flex-1 rounded-lg bg-red-600 py-2 font-semibold text-white hover:bg-red-700"
-                      >
-                        Delete
-                      </button>
-                    </div>
+
+<button
+  onClick={() => {
+    setSelectedJobId(job._id);
+    setIsDeleteOpen(true);
+  }}
+  className="flex-1 rounded-lg bg-red-600 py-2 font-semibold text-white hover:bg-red-700"
+>
+  Delete
+</button>
+            </div>
                   </div>
                 </div>
               ))}
             </div>
           )}
         </div>
+
+{isDeleteOpen && (
+  <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+    <div className="w-full max-w-md rounded-2xl bg-white p-6 dark:bg-gray-900">
+      <h2 className="text-2xl font-bold dark:text-white">
+        Delete Job
+      </h2>
+
+      <p className="mt-3 text-gray-600 dark:text-gray-300">
+        Are you sure you want to delete this job? This action cannot be undone.
+      </p>
+
+      <div className="mt-6 flex justify-end gap-3">
+        <button
+          onClick={() => setIsDeleteOpen(false)}
+          className="rounded-lg border px-5 py-2 dark:text-white"
+        >
+          Cancel
+        </button>
+
+        <button
+          onClick={handleDelete}
+          className="rounded-lg bg-red-600 px-5 py-2 font-semibold text-white hover:bg-red-700"
+        >
+          Confirm Delete
+        </button>
+      </div>
+    </div>
+  </div>
+)}
+
+
+
       </section>
 
       <Footer />
