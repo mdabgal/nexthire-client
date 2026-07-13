@@ -23,99 +23,150 @@ export default function LoginPage() {
   const [password, setPassword] =
     useState("");
 
-  // ==========================
-  // Login
-  // ==========================
+
+  // const handleLogin = async (
+  //   e: React.FormEvent<HTMLFormElement>
+  // ) => {
+  //   e.preventDefault();
+
+  //   if (!email || !password) {
+  //     return toast.error("Please fill all fields");
+  //   }
+
+  //   const emailRegex =
+  //     /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  //   if (!emailRegex.test(email)) {
+  //     return toast.error("Invalid email address");
+  //   }
+
+  //   if (password.length < 6) {
+  //     return toast.error(
+  //       "Password must be at least 6 characters"
+  //     );
+  //   }
+
+  //   setLoading(true);
+
+  //   try {
+  //     const { error } =
+  //       await authClient.signIn.email({
+  //         email,
+  //         password,
+  //       });
+
+  //     if (error) {
+  //       toast.error(error.message ?? "Login Failed");
+  //       return;
+  //     }
+
+  //     toast.success("Login Successful!");
+
+  //     router.push("/");
+  //   } catch {
+  //     toast.error("Something went wrong");
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
+
+
   const handleLogin = async (
-    e: React.FormEvent<HTMLFormElement>
-  ) => {
-    e.preventDefault();
+  e: React.FormEvent<HTMLFormElement>
+) => {
+  e.preventDefault();
 
-    if (!email || !password) {
-      return toast.error("Please fill all fields");
+  setLoading(true);
+
+  try {
+    const { error } = await authClient.signIn.email({
+      email,
+      password,
+    });
+
+    if (error) {
+      toast.error(error.message ?? "Login Failed");
+      return;
     }
 
-    const emailRegex =
-      /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-    if (!emailRegex.test(email)) {
-      return toast.error("Invalid email address");
-    }
-
-    if (password.length < 6) {
-      return toast.error(
-        "Password must be at least 6 characters"
-      );
-    }
-
-    setLoading(true);
-
-    try {
-      const { error } =
-        await authClient.signIn.email({
-          email,
-          password,
-        });
-
-      if (error) {
-        toast.error(error.message ?? "Login Failed");
-        return;
+    // JWT Generate
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_SERVER_URL}/jwt`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email }),
       }
+    );
 
-      toast.success("Login Successful!");
+    const data = await res.json();
 
-      router.push("/");
-    } catch {
-      toast.error("Something went wrong");
-    } finally {
-      setLoading(false);
+    localStorage.setItem("access-token", data.token);
+
+    toast.success("Login Successful!");
+
+    router.push("/");
+  } catch {
+    toast.error("Something went wrong");
+  } finally {
+    setLoading(false);
+  }
+};
+const handleGoogleLogin = async () => {
+  try {
+    const result = await authClient.signIn.social({
+      provider: "google",
+      callbackURL: "/",
+    });
+
+   
+  } catch {
+    toast.error("Google Login Failed");
+  }
+};
+
+const handleDemoLogin = async () => {
+  const demoEmail = "demo@nexthire.com";
+  const demoPassword = "demo@nexthire.com";
+
+  try {
+    const { error } = await authClient.signIn.email({
+      email: demoEmail,
+      password: demoPassword,
+    });
+
+    if (error) {
+      toast.error(error.message ?? "Demo Login Failed");
+      return;
     }
-  };
 
-  // ==========================
-  // Google Login
-  // ==========================
-  const handleGoogleLogin = async () => {
-    try {
-      await authClient.signIn.social({
-        provider: "google",
-        callbackURL: "/",
-      });
-    } catch {
-      toast.error("Google Login Failed");
-    }
-  };
-
-  // ==========================
-  // Demo Login
-  // ==========================
-  const handleDemoLogin = async () => {
-    const demoEmail = "demo@nexthire.com";
-    const demoPassword = "demo@nexthire.com";
-
-    setEmail(demoEmail);
-    setPassword(demoPassword);
-
-    try {
-      const { error } =
-        await authClient.signIn.email({
+    // JWT Generate
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_SERVER_URL}/jwt`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
           email: demoEmail,
-          password: demoPassword,
-        });
-
-      if (error) {
-        toast.error(error.message ?? "Demo Login Failed");
-        return;
+        }),
       }
+    );
 
-      toast.success("Demo Login Successful");
+    const data = await res.json();
 
-      router.push("/");
-    } catch {
-      toast.error("Something went wrong");
-    }
-  };
+    localStorage.setItem("access-token", data.token);
 
+    toast.success("Demo Login Successful");
+
+    router.push("/");
+  } catch {
+    toast.error("Something went wrong");
+  }
+};
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-100 px-4 dark:bg-slate-900">
       <div className="w-full max-w-md rounded-2xl bg-white p-8 shadow-xl dark:bg-slate-800">

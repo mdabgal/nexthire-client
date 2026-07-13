@@ -67,6 +67,7 @@ const { data, error } = await authClient.signUp.email({
   email,
   password,
   image,
+
 });
 
 if (error) {
@@ -76,25 +77,68 @@ if (error) {
 }
 
 // নিজের backend-এ user save করুন
-const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/users`, {
-  method: "POST",
-  headers: {
-    "Content-Type": "application/json",
-  },
-  body: JSON.stringify({
-    name,
-    email,
-    image,
-    role,
-  }),
-});
+// const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/users`, {
+//   method: "POST",
+//   headers: {
+//     "Content-Type": "application/json",
+//   },
+//   body: JSON.stringify({
+//     name,
+//     email,
+//     image,
+//     role,
+//   }),
+// });
+
+
+const res = await fetch(
+  `${process.env.NEXT_PUBLIC_SERVER_URL}/users`,
+  {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      name,
+      email,
+      image,
+      role,
+    }),
+  }
+);
 
 const result = await res.json();
 console.log(result);
 
+// ======================
+// JWT Token Generate
+// ======================
+const jwtRes = await fetch(
+  `${process.env.NEXT_PUBLIC_SERVER_URL}/jwt`,
+  {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      email,
+    }),
+  }
+);
+
+const jwtData = await jwtRes.json();
+
+// LocalStorage এ Save
+localStorage.setItem("access-token", jwtData.token);
+
+// ======================
+
 toast.success("Registration Successful!");
 
 router.push("/");
+
+
+
     
     } catch (error) {
       toast.error("Something went wrong!");
@@ -102,7 +146,7 @@ router.push("/");
       setLoading(false);
     }
   };
-
+   
   // Google Login
   const handleGoogleLogin = async () => {
     try {

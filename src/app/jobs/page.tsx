@@ -28,6 +28,7 @@ export type Job = {
 export default function JobsPage() {
 
 
+
   const [jobs, setJobs] = useState<Job[]>([]);
 
 
@@ -38,7 +39,7 @@ export default function JobsPage() {
   const [jobType, setJobType] = useState("All");
 
   const [sort, setSort] = useState("latest");
-
+const [loading, setLoading] = useState(true);
 
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -46,29 +47,18 @@ export default function JobsPage() {
 
   // Get Jobs From Backend
 
-  useEffect(()=>{
-
-
-    fetch("http://localhost:5000/jobs")
-
-    .then(res=>res.json())
-
-    .then(data=>{
-
+useEffect(() => {
+  fetch("http://localhost:5000/jobs")
+    .then((res) => res.json())
+    .then((data) => {
       setJobs(data);
-
+      setLoading(false);
     })
-
-    .catch(error=>{
-
+    .catch((error) => {
       console.log(error);
-
+      setLoading(false);
     });
-
-
-
-  },[]);
-
+}, []);
 
 
 
@@ -167,29 +157,36 @@ export default function JobsPage() {
           />
 
 
+{loading ? (
+  <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
+    {[...Array(8)].map((_, index) => (
+      <div
+        key={index}
+        className="animate-pulse rounded-xl border border-gray-200 bg-white p-5 dark:border-gray-700 dark:bg-gray-900"
+      >
+        <div className="mb-4 h-40 rounded bg-gray-300 dark:bg-gray-700"></div>
 
+        <div className="mb-3 h-6 rounded bg-gray-300 dark:bg-gray-700"></div>
 
+        <div className="mb-2 h-4 rounded bg-gray-300 dark:bg-gray-700"></div>
 
+        <div className="mb-2 h-4 w-2/3 rounded bg-gray-300 dark:bg-gray-700"></div>
 
-
-          <JobList
-
-            jobs={jobs}
-
-            search={search}
-
-            category={category}
-
-            jobType={jobType}
-
-            sort={sort}
-
-            currentPage={currentPage}
-
-            setCurrentPage={setCurrentPage}
-
-          />
-
+        <div className="mt-6 h-10 rounded bg-gray-300 dark:bg-gray-700"></div>
+      </div>
+    ))}
+  </div>
+) : (
+  <JobList
+    jobs={jobs}
+    search={search}
+    category={category}
+    jobType={jobType}
+    sort={sort}
+    currentPage={currentPage}
+    setCurrentPage={setCurrentPage}
+  />
+)}
 
 
 

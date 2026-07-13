@@ -71,36 +71,45 @@ export default function EditJobPage() {
       [e.target.name]: e.target.value,
     });
   };
+const handleUpdate = async (
+  e: React.FormEvent<HTMLFormElement>
+) => {
+  e.preventDefault();
 
-  const handleUpdate = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const token = localStorage.getItem("access-token");
 
-    try {
-      const res = await fetch(
-        `http://localhost:5000/jobs/${id}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(jobData),
-        }
-      );
+  if (!token) {
+    toast.error("Please login first");
+    return;
+  }
 
-      const data = await res.json();
-
-      if (data.success) {
-        toast.success("Job Updated Successfully!");
-
-        router.push("/jobs/manage");
-      } else {
-        toast.error("Update Failed");
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_SERVER_URL}/jobs/${id}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(jobData),
       }
-    } catch (error) {
-      console.log(error);
-      toast.error("Server Error");
+    );
+
+    const data = await res.json();
+
+    if (data.success) {
+      toast.success("Job Updated Successfully!");
+      router.push("/jobs/manage");
+    } else {
+      toast.error("Update Failed");
     }
-  };
+  } catch (error) {
+    console.log(error);
+    toast.error("Server Error");
+  }
+};
+
 
   if (loading) {
     return (

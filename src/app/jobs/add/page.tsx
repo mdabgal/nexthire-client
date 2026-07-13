@@ -1,5 +1,7 @@
 "use client";
 
+import Footer from "@/components/shared/Footer";
+import Navbar from "@/components/shared/Navbar";
 import { useState } from "react";
 
 type JobData = {
@@ -41,7 +43,7 @@ export default function AddJobPage() {
 const handleSubmit = async (e: React.FormEvent) => {
   e.preventDefault();
 
-
+console.log(localStorage.getItem("access-token"));
   try {
 
     const response = await fetch(
@@ -51,6 +53,8 @@ const handleSubmit = async (e: React.FormEvent) => {
 
         headers: {
           "Content-Type": "application/json",
+          
+  Authorization: `Bearer ${localStorage.getItem("access-token")}`,
         },
 
        body: JSON.stringify({
@@ -101,6 +105,8 @@ const handleSubmit = async (e: React.FormEvent) => {
 
 
   return (
+<>
+    <Navbar/>
     <section className="min-h-screen bg-gray-50 dark:bg-gray-900 py-10 px-4">
 
       <div className="
@@ -569,5 +575,8 @@ dark:border-gray-600
 
 
     </section>
+<Footer/>
+
+    </>
   );
 }

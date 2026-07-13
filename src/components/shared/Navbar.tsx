@@ -18,10 +18,7 @@ const navLinks = [
     title: "Jobs",
     href: "/jobs",
   },
-  {
-    title: "Companies",
-    href: "/companies",
-  },
+  
   {
     title: "About",
     href: "/about",

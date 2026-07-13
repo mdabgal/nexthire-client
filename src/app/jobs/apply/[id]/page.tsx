@@ -1,8 +1,9 @@
 "use client";
 
 import { FormEvent, useEffect, useState } from "react";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import toast from "react-hot-toast";
+import { authClient } from "@/lib/auth-client";
 
 type Job = {
   _id: string;
@@ -13,7 +14,8 @@ type Job = {
 export default function ApplyJobPage() {
   const params = useParams();
   const id = params.id as string;
-
+  const router = useRouter();
+const { data: session } = authClient.useSession();
   const [job, setJob] = useState<Job | null>(null);
 
   const [name, setName] = useState("");
@@ -46,6 +48,8 @@ const handleApply = async (
 ) => {
   e.preventDefault();
 
+  const token = localStorage.getItem("access-token");
+
   try {
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_SERVER_URL}/applications`,
@@ -53,6 +57,7 @@ const handleApply = async (
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
           jobId: job?._id,
@@ -63,6 +68,7 @@ const handleApply = async (
           phone,
           resume,
           coverLetter,
+          applicantEmail: session?.user?.email,
         }),
       }
     );
@@ -71,10 +77,19 @@ const handleApply = async (
 
     if (data.success) {
       toast.success("Application Submitted Successfully");
+
+      setName("");
+      setEmail("");
+      setPhone("");
+      setResume("");
+      setCoverLetter("");
+
+      router.push("/my-applications");
     } else {
-      toast.error("Application Failed");
+      toast.error(data.message || "Application Failed");
     }
   } catch (error) {
+    console.log(error);
     toast.error("Something went wrong");
   }
 };

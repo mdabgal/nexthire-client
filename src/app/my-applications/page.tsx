@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Navbar from "@/components/shared/Navbar";
 import Footer from "@/components/shared/Footer";
+import { authClient } from "@/lib/auth-client";
 
 type Application = {
   _id: string;
@@ -14,13 +15,25 @@ type Application = {
 export default function MyApplicationsPage() {
   const [applications, setApplications] = useState<Application[]>([]);
 
-  useEffect(() => {
-    fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/applications`)
-      .then((res) => res.json())
-      .then((data) => setApplications(data))
-      .catch((err) => console.log(err));
-  }, []);
+  // useEffect(() => {
+  //   fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/applications`)
+  //     .then((res) => res.json())
+  //     .then((data) => setApplications(data))
+  //     .catch((err) => console.log(err));
+  // }, []);
 
+
+  const { data: session } = authClient.useSession();
+
+useEffect(() => {
+  if (!session?.user?.email) return;
+
+  fetch(
+    `${process.env.NEXT_PUBLIC_SERVER_URL}/applications/${session.user.email}`
+  )
+    .then((res) => res.json())
+    .then((data) => setApplications(data));
+}, [session]);
   return (
     <>
       <Navbar />

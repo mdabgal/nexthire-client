@@ -26,14 +26,24 @@ const [isDeleteOpen, setIsDeleteOpen] = useState(false);
 
 
 
-  const handleDelete = async () => {
+const handleDelete = async () => {
   if (!selectedJobId) return;
+
+  const token = localStorage.getItem("access-token");
+
+  if (!token) {
+    toast.error("Please login first");
+    return;
+  }
 
   try {
     const res = await fetch(
-      `http://localhost:5000/jobs/${selectedJobId}`,
+      `${process.env.NEXT_PUBLIC_SERVER_URL}/jobs/${selectedJobId}`,
       {
         method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       }
     );
 
@@ -54,7 +64,6 @@ const [isDeleteOpen, setIsDeleteOpen] = useState(false);
     toast.error("Delete failed!");
   }
 };
-
   useEffect(() => {
     fetch("http://localhost:5000/jobs")
       .then((res) => res.json())
@@ -92,12 +101,37 @@ const [isDeleteOpen, setIsDeleteOpen] = useState(false);
               + Add Job
             </Link>
           </div>
+{loading ? (
+  <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+    {[...Array(6)].map((_, index) => (
+      <div
+        key={index}
+        className="overflow-hidden rounded-2xl border bg-white shadow-md dark:border-gray-800 dark:bg-gray-900"
+      >
+        {/* Image Skeleton */}
+        <div className="h-52 w-full animate-pulse bg-gray-300 dark:bg-gray-700"></div>
 
-          {loading ? (
-            <div className="py-20 text-center text-xl font-semibold dark:text-white">
-              Loading...
-            </div>
-          ) : jobs.length === 0 ? (
+        <div className="space-y-4 p-5">
+          <div className="h-6 w-3/4 animate-pulse rounded bg-gray-300 dark:bg-gray-700"></div>
+
+          <div className="h-4 w-full animate-pulse rounded bg-gray-300 dark:bg-gray-700"></div>
+
+          <div className="h-4 w-5/6 animate-pulse rounded bg-gray-300 dark:bg-gray-700"></div>
+
+          <div className="h-4 w-2/3 animate-pulse rounded bg-gray-300 dark:bg-gray-700"></div>
+
+          <div className="h-5 w-1/3 animate-pulse rounded bg-gray-300 dark:bg-gray-700"></div>
+
+          <div className="mt-4 flex gap-3">
+            <div className="h-10 flex-1 animate-pulse rounded-lg bg-gray-300 dark:bg-gray-700"></div>
+
+            <div className="h-10 flex-1 animate-pulse rounded-lg bg-gray-300 dark:bg-gray-700"></div>
+          </div>
+        </div>
+      </div>
+    ))}
+  </div>
+) : jobs.length === 0 ? (
             <div className="rounded-2xl border bg-white py-20 text-center dark:border-gray-800 dark:bg-gray-900">
               <h2 className="text-2xl font-bold dark:text-white">
                 No Jobs Found
