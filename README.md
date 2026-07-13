@@ -1,36 +1,216 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
-## Getting Started
+#  NextHire – Full Stack Job Portal
 
-First, run the development server:
+NextHire is a modern Full Stack Job Portal built with Next.js, TypeScript, Express.js, MongoDB, Better Auth, and JWT Authentication.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+It allows employers to post and manage jobs while job seekers can browse jobs and apply online.
+
+---
+
+##  Live Demo
+
+🔗 Client: https://your-client-url.vercel.app
+
+🔗 Server: https://your-server-url.vercel.app
+
+---
+
+##  Features
+
+###  Authentication
+- Better Auth Authentication
+- Email & Password Login
+- Google Login
+- JWT Protected API
+- Role Based Authentication
+
+###  Job Seeker
+- Browse Jobs
+- View Job Details
+- Apply for Jobs
+- My Applications
+- Dark / Light Theme
+
+###  Employer
+- Add Job
+- Edit Job
+- Delete Job
+- Manage Jobs
+- Dashboard Statistics
+
+###  UI Features
+- Fully Responsive
+- Loading Spinner
+- Custom Error Page
+- Toast Notifications
+- Dark & Light Mode
+- Beautiful Modern UI
+
+---
+
+# Tech Stack
+
+## Frontend
+
+- Next.js 16
+- TypeScript
+- Tailwind CSS
+- React Hot Toast
+- Better Auth Client
+- Lucide React
+
+## Backend
+
+- Express.js
+- MongoDB
+- JWT Authentication
+- Better Auth
+- TypeScript
+- dotenv
+- cors
+
+---
+
+#  Project Structure
+
+Client
+
+```
+app/
+components/
+provider/
+lib/
+types/
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Server
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```
+routes/
+middlewares/
+database/
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+---
 
-## Learn More
+#  Environment Variables
 
-To learn more about Next.js, take a look at the following resources:
+## Client (.env.local)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```env
+NEXT_PUBLIC_SERVER_URL=http://localhost:5000
+NEXT_PUBLIC_BETTER_AUTH_URL=http://localhost:3000
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
+## Server (.env)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```env
+PORT=5000
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+MONGODB_URI=your_mongodb_uri
+
+JWT_SECRET=your_secret_key
+
+BETTER_AUTH_SECRET=your_secret
+
+BETTER_AUTH_URL=http://localhost:3000
+```
+
+---
+
+# 📦 Installation
+
+## Client
+
+```bash
+git clone https://github.com/yourusername/nexthire-client.git
+
+cd nexthire-client
+
+npm install
+
+npm run dev
+```
+
+---
+
+## Server
+
+```bash
+git clone https://github.com/yourusername/nexthire-server.git
+
+cd nexthire-server
+
+npm install
+
+npm run dev
+```
+
+---
+
+# 📸 Main Pages
+
+- Home
+- Jobs
+- Job Details
+- Apply Job
+- Login
+- Register
+- About
+- Contact
+- My Applications
+- Dashboard
+- Add Job
+- Manage Jobs
+
+---
+
+#  Role Based Access
+
+### Employer
+
+- Add Job
+- Edit Job
+- Delete Job
+- Dashboard
+- Applications
+
+### Job Seeker
+
+- Browse Jobs
+- Apply Job
+- My Applications
+
+---
+
+#  Dashboard
+
+Employer Dashboard includes
+
+- Total Jobs
+- Total Applications
+- Total Users
+- Dashboard Statistics
+
+---
+
+#  Author
+
+Md Abgal Hossain
+
+Frontend Developer (MERN Stack)
+
+GitHub:
+https://github.com/mdabgal
+
+Portfolio:
+https://my-portfolio-ecru-two-25.vercel.app
+
+LinkedIn:
+https://linkedin.com/in/your-linkedin
+
+---
+
+ If you like this project, don't forget to give it a star.
