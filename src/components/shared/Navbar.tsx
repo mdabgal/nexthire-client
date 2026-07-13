@@ -34,20 +34,93 @@ export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
 
   const { data: session } = authClient.useSession();
+  console.log("Navbar image:", session?.user?.image);
   const [role, setRole] = useState("");
 
 
-  useEffect(() => {
-  if (session?.user?.email) {
-    fetch(
-      `http://localhost:5000/users/${session.user.email}`
-    )
-      .then((res) => res.json())
-      .then((data) => {
-        setRole(data.role);
-      });
-  }
+//   useEffect(() => {
+//   if (session?.user?.email) {
+//     fetch(
+//       `http://localhost:5000/users/${session.user.email}`
+//     )
+//       .then((res) => res.json())
+//       .then((data) => {
+//         setRole(data.role);
+//       });
+//   }
+// }, [session]);
+
+
+useEffect(() => {
+  const syncUser = async () => {
+    console.log(session?.user);
+    if (!session?.user?.email) return;
+
+    const image =
+      session.user.image || "https://i.ibb.co/2tZ5z3K/user.png";
+
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_SERVER_URL}/users/${session.user.email}`
+    );
+
+    if (res.status === 404) {
+      await fetch(
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/users`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            name: session.user.name,
+            email: session.user.email,
+            image,
+            role: "job-seeker",
+          }),
+        }
+      );
+    }
+
+    const userRes = await fetch(
+      `${process.env.NEXT_PUBLIC_SERVER_URL}/users/${session.user.email}`
+    );
+
+    const user = await userRes.json();
+
+    setRole(user.role);
+
+
+    const jwtRes = await fetch(
+      `${process.env.NEXT_PUBLIC_SERVER_URL}/jwt`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: session.user.email,
+        }),
+      }
+    );
+
+
+    const jwt = await jwtRes.json();
+
+    if (jwt.token) {
+      localStorage.setItem(
+        "access-token",
+        jwt.token
+      );
+    }
+  };
+
+
+  syncUser();
+
 }, [session]);
+
+
+
 
 const handleLogout = async () => {
   await authClient.signOut();
@@ -146,6 +219,9 @@ const handleLogout = async () => {
         alt="user"
         className="h-10 w-10 rounded-full border"
       />
+
+
+  
 
       <button onClick={handleLogout}>
         <LogOut />

@@ -148,16 +148,36 @@ router.push("/");
   };
    
   // Google Login
-  const handleGoogleLogin = async () => {
-    try {
-      await authClient.signIn.social({
-        provider: "google",
-        callbackURL: "/",
-      });
-    } catch (error) {
+  // const handleGoogleLogin = async () => {
+  //   try {
+  //     await authClient.signIn.social({
+  //       provider: "google",
+  //       callbackURL: "/",
+  //     });
+  //   } catch (error) {
+  //     toast.error("Google Login Failed");
+  //   }
+  // };
+
+const handleGoogleLogin = async () => {
+  try {
+    const { data, error } = await authClient.signIn.social({
+      provider: "google",
+      callbackURL: "/",
+    });
+
+    if (error) {
       toast.error("Google Login Failed");
+      return;
     }
-  };
+
+  } catch (error) {
+    toast.error("Google Login Failed");
+  }
+};
+
+
+
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-100 px-4 dark:bg-slate-900">
