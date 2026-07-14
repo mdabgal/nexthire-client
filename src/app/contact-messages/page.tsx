@@ -25,7 +25,7 @@ export default function ContactMessagesPage() {
     const fetchMessages = async () => {
 
       const res = await fetch(
-        "http://localhost:5000/contacts"
+         `${process.env.NEXT_PUBLIC_SERVER_URL}/contacts`
       );
 
       const data = await res.json();

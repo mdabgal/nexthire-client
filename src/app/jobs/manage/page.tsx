@@ -65,7 +65,7 @@ const handleDelete = async () => {
   }
 };
   useEffect(() => {
-    fetch("http://localhost:5000/jobs")
+     fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/jobs`)
       .then((res) => res.json())
       .then((data) => {
         setJobs(data);

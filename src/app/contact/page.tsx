@@ -26,7 +26,7 @@ export default function ContactPage() {
     try {
 
       const res = await fetch(
-        "http://localhost:5000/contacts",
+          `${process.env.NEXT_PUBLIC_SERVER_URL}/contacts`,
         {
           method: "POST",
           headers: {
