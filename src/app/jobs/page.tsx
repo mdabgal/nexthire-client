@@ -162,7 +162,7 @@ useEffect(() => {
     {[...Array(8)].map((_, index) => (
       <div
         key={index}
-        className="animate-pulse rounded-xl border border-gray-200 bg-white p-5 dark:border-gray-700 dark:bg-gray-900"
+        className="animate-pulse rounded-xl border border-gray-200 bg-white p-5 shadow-md dark:border-gray-700 dark:bg-gray-900 dark:shadow-none"
       >
         <div className="mb-4 h-40 rounded bg-gray-300 dark:bg-gray-700"></div>
 

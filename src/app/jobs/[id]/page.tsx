@@ -55,7 +55,7 @@ export default async function JobDetailsPage({
             ← Back to Jobs
           </Link>
 
-          <div className="overflow-hidden rounded-3xl border bg-gray-50 shadow-lg dark:border-gray-800 dark:bg-gray-900">
+          <div  className="overflow-hidden rounded-3xl border border-gray-200 bg-white shadow-md transition duration-300 hover:shadow-xl dark:border-gray-800 dark:bg-gray-900 dark:shadow-none">
 
             <img
               src={job.image}

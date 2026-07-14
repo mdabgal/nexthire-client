@@ -27,17 +27,21 @@ export default function JobCard({ job }: JobCardProps) {
   return (
 
     <div
-      className="
-      overflow-hidden
-      rounded-2xl
-      border
-      bg-gray-50
-      transition
-      hover:-translate-y-1
-      hover:shadow-lg
-      dark:border-gray-800
-      dark:bg-gray-900
-      "
+     className="
+overflow-hidden
+rounded-2xl
+border
+border-gray-200
+bg-white
+shadow-md
+transition
+duration-300
+hover:-translate-y-1
+hover:shadow-xl
+dark:border-gray-800
+dark:bg-gray-900
+dark:shadow-none
+"
     >
 
 

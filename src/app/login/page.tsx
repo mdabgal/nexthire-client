@@ -126,46 +126,7 @@ const handleGoogleLogin = async () => {
     toast.error("Google Login Failed");
   }
 };
-// const handleDemoLogin = async () => {
-//   const demoEmail = "demo@nexthire.com";
-//   const demoPassword = "demo@nexthire.com";
 
-//   try {
-//     const { error } = await authClient.signIn.email({
-//       email: demoEmail,
-//       password: demoPassword,
-//     });
-
-//     if (error) {
-//       toast.error(error.message ?? "Demo Login Failed");
-//       return;
-//     }
-
-//     // JWT Generate
-//     const res = await fetch(
-//       `${process.env.NEXT_PUBLIC_SERVER_URL}/jwt`,
-//       {
-//         method: "POST",
-//         headers: {
-//           "Content-Type": "application/json",
-//         },
-//         body: JSON.stringify({
-//           email: demoEmail,
-//         }),
-//       }
-//     );
-
-//     const data = await res.json();
-
-//     localStorage.setItem("access-token", data.token);
-
-//     toast.success("Demo Login Successful");
-
-//     router.push("/");
-//   } catch {
-//     toast.error("Something went wrong");
-//   }
-// };
   const handleJobSeekerDemo = async () => {
   const email = "seeker@gmail.com";
   const password = "seeker@gmail.com";

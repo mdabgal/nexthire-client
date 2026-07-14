@@ -25,6 +25,23 @@ export default function EditJobPage() {
   const router = useRouter();
 
 const [role, setRole] = useState("");
+
+
+
+const { data: session } = authClient.useSession();
+
+useEffect(() => {
+  if (!session?.user?.email) return;
+
+  fetch(
+    `${process.env.NEXT_PUBLIC_SERVER_URL}/users/${session.user.email}`
+  )
+    .then((res) => res.json())
+    .then((user) => {
+      setRole(user.role);
+    });
+}, [session]);
+
   const [loading, setLoading] = useState(true);
 
   const [jobData, setJobData] = useState<JobData>({
@@ -100,16 +117,21 @@ const handleUpdate = async (
 
     const data = await res.json();
 
-    if (data.success) {
-      toast.success("Job Updated Successfully!");
+ 
 
-      setTimeout(() => {
-        if (role === "admin") {
-          router.push("/jobs/manage");
-        } else {
-          router.push("/jobs/my-jobs");
-        }
-      }, 1200);
+if (data.success) {
+  toast.success("Job Updated Successfully!");
+
+  setTimeout(() => {
+    if (role === "admin") {
+      router.push("/jobs/manage");
+    } else if (role === "employer") {
+      router.push("/jobs/my-jobs");
+    }
+  }, 1200);
+
+
+
     } else {
       toast.error("Update Failed");
     }

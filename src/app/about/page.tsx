@@ -170,9 +170,7 @@ export default function AboutPage() {
             top companies today.
           </p>
 
-          <button className="mt-8 rounded-xl bg-white px-8 py-4 font-semibold text-blue-600 transition hover:bg-gray-100">
-            Explore Jobs
-          </button>
+          
 
         </div>
       </section>

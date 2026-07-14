@@ -71,7 +71,7 @@ export default function Statistics() {
             return (
               <div
                 key={item.title}
-                className="rounded-2xl border bg-gray-50 p-6 text-center transition hover:-translate-y-1 hover:shadow-lg dark:border-gray-800 dark:bg-gray-900"
+              className="rounded-2xl border border-gray-200 bg-white p-6 text-center shadow-md transition duration-300 hover:-translate-y-1 hover:shadow-xl dark:border-gray-800 dark:bg-gray-900 dark:shadow-none"
               >
 
                 <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-blue-100 text-blue-600 dark:bg-blue-950">
