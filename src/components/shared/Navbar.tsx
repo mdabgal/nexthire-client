@@ -6,8 +6,8 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { authClient } from "@/lib/auth-client";
 import toast from "react-hot-toast";
-import { LogOut } from "lucide-react";
 
+import { LogOut, Menu, X } from "lucide-react";
 
 const navLinks = [
   {
@@ -142,7 +142,7 @@ const handleLogout = async () => {
 
 
         {/* Desktop Navigation */}
-        <nav className="hidden items-center gap-8 md:flex">
+        <nav className="hidden items-center gap-8 xl:flex">
           {navLinks.map((link) => (
             <Link
               key={link.href}
@@ -165,19 +165,34 @@ const handleLogout = async () => {
   <>
     <Link href="/jobs/add">Add Job</Link>
 
-    <Link href="/jobs/manage">
-      Manage Jobs
+    
+
+   <Link href="/jobs/my-jobs">
+      My Jobs
     </Link>
 
-    <Link href="/dashboard">
-      Dashboard
+    
+  </>
+)}
+
+
+{session && role === "admin" && (
+  <>
+    <Link href="/jobs/manage">
+      Manage Jobs
     </Link>
 
     <Link href="/applications">
       Applications
     </Link>
+
+    <Link href="/dashboard">
+      Dashboard
+    </Link>
   </>
 )}
+
+
 
 {session && role === "job-seeker" && (
   <Link href="/my-applications">
@@ -191,7 +206,7 @@ const handleLogout = async () => {
 
 
         {/* Desktop Actions */}
-    <div className="hidden items-center gap-4 md:flex">
+    <div className="hidden items-center gap-4 xl:flex">
   <ThemeToggle />
 
   {!session ? (
@@ -232,16 +247,20 @@ const handleLogout = async () => {
 
 
         {/* Mobile Buttons */}
-        <div className="flex items-center gap-3 md:hidden">
+        <div className="flex items-center gap-3 xl:hidden">
 
           <ThemeToggle />
 
-          <button
-            onClick={() => setIsOpen(!isOpen)}
-            className="text-3xl text-gray-700 dark:text-white"
-          >
-            ☰
-          </button>
+         <button
+  onClick={() => setIsOpen(!isOpen)}
+  className="rounded-lg p-2 hover:bg-gray-100 dark:hover:bg-slate-800"
+>
+  {isOpen ? (
+    <X size={28} />
+  ) : (
+    <Menu size={28} />
+  )}
+</button>
 
         </div>
 
@@ -252,7 +271,7 @@ const handleLogout = async () => {
       {/* Mobile Menu */}
 
       {isOpen && (
-        <div className="border-t bg-white dark:border-gray-800 dark:bg-slate-950 md:hidden">
+        <div className="border-t bg-white dark:border-gray-800 dark:bg-slate-950 xl:hidden">
 
           <nav className="flex flex-col gap-2 p-6">
 
@@ -289,15 +308,9 @@ const handleLogout = async () => {
   </>
 ) : (
   <>
-    {role === "employer" && (
+    {role === "admin" && (
       <>
-        <Link
-          href="/jobs/add"
-          onClick={() => setIsOpen(false)}
-        >
-          Add Job
-        </Link>
-
+      
         <Link
           href="/jobs/manage"
           onClick={() => setIsOpen(false)}
@@ -320,6 +333,26 @@ const handleLogout = async () => {
         </Link>
       </>
     )}
+
+
+{role === "employer" && (
+  <>
+    <Link
+      href="/jobs/add"
+      onClick={() => setIsOpen(false)}
+    >
+      Add Job
+    </Link>
+
+    <Link
+      href="/jobs/my-jobs"
+      onClick={() => setIsOpen(false)}
+    >
+      My Jobs
+    </Link>
+  </>
+)}
+
 
     {role === "job-seeker" && (
       <Link

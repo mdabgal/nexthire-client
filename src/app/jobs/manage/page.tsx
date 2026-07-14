@@ -94,12 +94,12 @@ const handleDelete = async () => {
               </p>
             </div>
 
-            <Link
+            {/* <Link
               href="/jobs/add"
               className="rounded-lg bg-indigo-600 px-5 py-3 font-semibold text-white hover:bg-indigo-700"
             >
               + Add Job
-            </Link>
+            </Link> */}
           </div>
 {loading ? (
   <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">

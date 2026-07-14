@@ -2,7 +2,10 @@
 
 import Footer from "@/components/shared/Footer";
 import Navbar from "@/components/shared/Navbar";
+import { authClient } from "@/lib/auth-client";
 import { useState } from "react";
+import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 type JobData = {
   title: string;
@@ -17,6 +20,8 @@ type JobData = {
 };
 
 export default function AddJobPage() {
+const router = useRouter();
+  const { data: session } = authClient.useSession();
   const [jobData, setJobData] = useState<JobData>({
     title: "",
     company: "",
@@ -43,66 +48,52 @@ export default function AddJobPage() {
 const handleSubmit = async (e: React.FormEvent) => {
   e.preventDefault();
 
-console.log(localStorage.getItem("access-token"));
   try {
-
     const response = await fetch(
-      "http://localhost:5000/jobs",
+       `${process.env.NEXT_PUBLIC_SERVER_URL}/jobs`,
       {
         method: "POST",
-
         headers: {
           "Content-Type": "application/json",
-          
-  Authorization: `Bearer ${localStorage.getItem("access-token")}`,
+          Authorization: `Bearer ${localStorage.getItem("access-token")}`,
         },
-
-       body: JSON.stringify({
-  ...jobData,
-  createdAt: new Date(),
-}),
+        body: JSON.stringify({
+          ...jobData,
+          employerEmail: session?.user?.email,
+          employerName: session?.user?.name,
+          createdAt: new Date(),
+        }),
       }
     );
 
-
     const data = await response.json();
 
-
     if (data.success) {
-
-      alert("Job Added Successfully!");
-
+      toast.success("Job Added Successfully!");
 
       setJobData({
         title: "",
         company: "",
-         category: "",
+        category: "",
         location: "",
         jobType: "",
         salary: "",
         description: "",
         requirements: "",
-            image: "",
+        image: "",
       });
 
-
+      setTimeout(() => {
+        router.push("/jobs/my-jobs");
+      }, 1200);
     } else {
-
-      alert("Something went wrong!");
-
+      toast.error(data.message || "Something went wrong!");
     }
-
-
   } catch (error) {
-
     console.log(error);
-
-    alert("Server Error");
-
+    toast.error("Server Error");
   }
-
 };
-
 
   return (
 <>
@@ -499,14 +490,8 @@ dark:text-white
 border-gray-300
 dark:border-gray-600
 "
-
 />
-
 </div>
-
-
-
-
 
           {/* Requirements */}
 

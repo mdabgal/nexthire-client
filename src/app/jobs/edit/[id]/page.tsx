@@ -6,6 +6,7 @@ import toast from "react-hot-toast";
 
 import Navbar from "@/components/shared/Navbar";
 import Footer from "@/components/shared/Footer";
+import { authClient } from "@/lib/auth-client";
 
 type JobData = {
   title: string;
@@ -23,6 +24,7 @@ export default function EditJobPage() {
   const { id } = useParams();
   const router = useRouter();
 
+const [role, setRole] = useState("");
   const [loading, setLoading] = useState(true);
 
   const [jobData, setJobData] = useState<JobData>({
@@ -100,7 +102,14 @@ const handleUpdate = async (
 
     if (data.success) {
       toast.success("Job Updated Successfully!");
-      router.push("/jobs/manage");
+
+      setTimeout(() => {
+        if (role === "admin") {
+          router.push("/jobs/manage");
+        } else {
+          router.push("/jobs/my-jobs");
+        }
+      }, 1200);
     } else {
       toast.error("Update Failed");
     }
@@ -109,8 +118,6 @@ const handleUpdate = async (
     toast.error("Server Error");
   }
 };
-
-
   if (loading) {
     return (
       <>
