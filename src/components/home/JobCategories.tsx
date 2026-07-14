@@ -1,140 +1,120 @@
+"use client";
+
+import Link from "next/link";
 import {
   Code2,
   Palette,
-  BarChart3,
-  Megaphone,
-  BriefcaseBusiness,
-  Headphones,
+  Server,
+  Smartphone,
+  Brain,
+  Cloud,
+  Database,
+  Layers3,
+  DatabaseZap,
 } from "lucide-react";
 
 const categories = [
   {
     icon: Code2,
-    title: "Technology",
-    jobs: "1200+ Jobs",
-    description:
-      "Frontend, Backend, Full Stack and Software Development roles.",
+    title: "Frontend",
+    description: "React, Next.js, Vue and Angular development jobs.",
+  },
+  {
+    icon: Database,
+    title: "Backend",
+    description: "Node.js, Express, Django and Laravel opportunities.",
+  },
+  {
+    icon: Layers3,
+    title: "Full Stack",
+    description: "Build complete web applications from frontend to backend.",
   },
   {
     icon: Palette,
     title: "Design",
-    jobs: "450+ Jobs",
-    description:
-      "UI/UX Designer, Graphic Designer and Creative roles.",
+    description: "UI/UX, Graphic Design and Creative positions.",
   },
   {
-    icon: BarChart3,
-    title: "Marketing",
-    jobs: "700+ Jobs",
-    description:
-      "Digital Marketing, SEO and Business Growth opportunities.",
+    icon: Server,
+    title: "DevOps",
+    description: "Docker, Kubernetes, AWS and DevOps engineering jobs.",
   },
   {
-    icon: Megaphone,
-    title: "Sales",
-    jobs: "600+ Jobs",
-    description:
-      "Sales executive and customer relationship positions.",
+    icon: Smartphone,
+    title: "Mobile",
+    description: "Android, iOS, Flutter and React Native careers.",
   },
   {
-    icon: BriefcaseBusiness,
-    title: "Business",
-    jobs: "500+ Jobs",
-    description:
-      "Management, HR and Business development careers.",
+    icon: DatabaseZap,
+    title: "Data",
+    description: "Data Analyst, Data Scientist and Data Engineer roles.",
   },
   {
-    icon: Headphones,
-    title: "Support",
-    jobs: "350+ Jobs",
-    description:
-      "Customer support and service based opportunities.",
+    icon: Cloud,
+    title: "Cloud",
+    description: "Cloud Engineer, Azure and Google Cloud careers.",
+  },
+  {
+    icon: Brain,
+    title: "AI",
+    description: "Artificial Intelligence and Machine Learning jobs.",
   },
 ];
 
 export default function JobCategories() {
   return (
-    <section className="bg-gray-50 py-20 dark:bg-gray-900">
-
+    <section className="bg-gray-50 py-20 dark:bg-gray-950">
       <div className="mx-auto max-w-7xl px-6">
-
         {/* Heading */}
-
         <div className="mx-auto max-w-2xl text-center">
-
-          <span className="text-sm font-semibold text-blue-600">
+          <span className="rounded-full bg-blue-100 px-4 py-2 text-sm font-semibold text-blue-600 dark:bg-blue-900/30 dark:text-blue-400">
             Explore Categories
           </span>
 
-          <h2 className="mt-3 text-3xl font-bold text-gray-900 md:text-4xl dark:text-white">
-            Find Jobs By Category
+          <h2 className="mt-5 text-3xl font-bold text-gray-900 dark:text-white md:text-4xl">
+            Browse Jobs By Category
           </h2>
 
           <p className="mt-4 text-gray-600 dark:text-gray-400">
-            Discover opportunities across different industries and
-            build your professional career.
+            Discover exciting opportunities across different technologies and
+            find the perfect role for your career.
           </p>
-
         </div>
 
-
-
-        {/* Category Cards */}
-
-        <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-
+        {/* Categories */}
+        <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {categories.map((category) => {
-
             const Icon = category.icon;
 
             return (
               <div
                 key={category.title}
-                className="group rounded-2xl border bg-white p-6 transition hover:-translate-y-1 hover:shadow-xl dark:border-gray-800 dark:bg-gray-950"
+                className="group rounded-2xl border border-gray-200 bg-white p-7 shadow-sm transition duration-300 hover:-translate-y-2 hover:border-blue-500 hover:shadow-xl dark:border-gray-800 dark:bg-gray-900"
               >
-
-                <div className="flex items-center justify-between">
-
-                  <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-blue-100 text-blue-600 group-hover:bg-blue-600 group-hover:text-white dark:bg-blue-950">
-
-                    <Icon size={26} />
-
-                  </div>
-
-
-                  <span className="text-sm font-medium text-blue-600">
-                    {category.jobs}
-                  </span>
-
+                <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-blue-100 text-blue-600 transition group-hover:bg-blue-600 group-hover:text-white dark:bg-blue-900/30 dark:text-blue-400">
+                  <Icon size={28} />
                 </div>
 
-
-
-                <h3 className="mt-6 text-xl font-semibold text-gray-900 dark:text-white">
+                <h3 className="mt-6 text-2xl font-bold text-gray-900 dark:text-white">
                   {category.title}
                 </h3>
 
-
-                <p className="mt-3 text-sm leading-6 text-gray-600 dark:text-gray-400">
+                <p className="mt-3 leading-7 text-gray-600 dark:text-gray-400">
                   {category.description}
                 </p>
 
-
-                <button className="mt-5 text-sm font-semibold text-blue-600 hover:underline">
-                  View Jobs →
-                </button>
-
-
+                <Link
+                  href={`/jobs?category=${encodeURIComponent(category.title)}`}
+                  className="mt-6 inline-flex items-center font-semibold text-blue-600 transition hover:gap-3 gap-2"
+                >
+                  View Jobs
+                  <span>→</span>
+                </Link>
               </div>
             );
-
           })}
-
         </div>
-
-
       </div>
-
     </section>
   );
 }

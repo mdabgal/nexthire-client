@@ -185,6 +185,9 @@ const handleLogout = async () => {
     <Link href="/applications">
       Applications
     </Link>
+    <Link href="/contact-messages">
+ Contact Messages
+</Link>
 
     <Link href="/dashboard">
       Dashboard
@@ -324,6 +327,10 @@ const handleLogout = async () => {
         >
           Dashboard
         </Link>
+
+        <Link href="/contact-messages">
+ Contact Messages
+</Link>
 
         <Link
           href="/applications"

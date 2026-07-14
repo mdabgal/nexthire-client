@@ -126,48 +126,88 @@ const handleGoogleLogin = async () => {
     toast.error("Google Login Failed");
   }
 };
+// const handleDemoLogin = async () => {
+//   const demoEmail = "demo@nexthire.com";
+//   const demoPassword = "demo@nexthire.com";
 
-const handleDemoLogin = async () => {
-  const demoEmail = "demo@nexthire.com";
-  const demoPassword = "demo@nexthire.com";
+//   try {
+//     const { error } = await authClient.signIn.email({
+//       email: demoEmail,
+//       password: demoPassword,
+//     });
 
-  try {
-    const { error } = await authClient.signIn.email({
-      email: demoEmail,
-      password: demoPassword,
-    });
+//     if (error) {
+//       toast.error(error.message ?? "Demo Login Failed");
+//       return;
+//     }
 
-    if (error) {
-      toast.error(error.message ?? "Demo Login Failed");
-      return;
-    }
+//     // JWT Generate
+//     const res = await fetch(
+//       `${process.env.NEXT_PUBLIC_SERVER_URL}/jwt`,
+//       {
+//         method: "POST",
+//         headers: {
+//           "Content-Type": "application/json",
+//         },
+//         body: JSON.stringify({
+//           email: demoEmail,
+//         }),
+//       }
+//     );
 
-    // JWT Generate
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_SERVER_URL}/jwt`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email: demoEmail,
-        }),
-      }
-    );
+//     const data = await res.json();
 
-    const data = await res.json();
+//     localStorage.setItem("access-token", data.token);
 
-    localStorage.setItem("access-token", data.token);
+//     toast.success("Demo Login Successful");
 
-    toast.success("Demo Login Successful");
+//     router.push("/");
+//   } catch {
+//     toast.error("Something went wrong");
+//   }
+// };
+  const handleJobSeekerDemo = async () => {
+  const email = "seeker@gmail.com";
+  const password = "seeker@gmail.com";
 
-    router.push("/");
-  } catch {
-    toast.error("Something went wrong");
-  }
+  await authClient.signIn.email({
+    email,
+    password,
+  });
+
+  toast.success("Job Seeker Demo Login");
+  router.push("/");
 };
-  return (
+
+
+const handleEmployerDemo = async () => {
+  const email = "employer@gmail.com";
+  const password = "employer@gmail.com";
+
+  await authClient.signIn.email({
+    email,
+    password,
+  });
+
+  toast.success("Employer Demo Login");
+  router.push("/");
+};
+
+
+const handleAdminDemo = async () => {
+  const email = "admin@gmail.com";
+  const password = "admin@gmail.com";
+
+  await authClient.signIn.email({
+    email,
+    password,
+  });
+
+  toast.success("Admin Demo Login");
+  router.push("/");
+};
+
+return (
     <div className="flex min-h-screen items-center justify-center bg-gray-100 px-4 dark:bg-slate-900">
       <div className="w-full max-w-md rounded-2xl bg-white p-8 shadow-xl dark:bg-slate-800">
 
@@ -269,13 +309,28 @@ const handleDemoLogin = async () => {
           Continue with Google
         </button>
 
-        {/* Demo Login */}
-        <button
-          onClick={handleDemoLogin}
-          className="w-full rounded-lg border border-indigo-600 py-3 font-semibold text-indigo-600 transition hover:bg-indigo-600 hover:text-white"
-        >
-          Demo Login
-        </button>
+       <button
+ onClick={handleJobSeekerDemo}
+ className="w-full rounded-lg border py-3"
+>
+ Job Seeker Demo
+</button>
+
+
+<button
+ onClick={handleEmployerDemo}
+ className="mt-3 w-full rounded-lg border py-3"
+>
+ Employer Demo
+</button>
+
+
+<button
+ onClick={handleAdminDemo}
+ className="mt-3 w-full rounded-lg bg-indigo-600 py-3 text-white"
+>
+ Admin Demo
+</button>
 
         <p className="mt-6 text-center text-sm">
           Don't have an account?{" "}
