@@ -34,7 +34,7 @@ export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
 
   const { data: session } = authClient.useSession();
-  console.log("Navbar image:", session?.user?.image);
+ 
   const [role, setRole] = useState("");
 
 
@@ -53,7 +53,7 @@ export default function Navbar() {
 
 useEffect(() => {
   const syncUser = async () => {
-    console.log(session?.user);
+ 
     if (!session?.user?.email) return;
 
     const image =
