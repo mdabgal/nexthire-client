@@ -9,9 +9,9 @@ It allows employers to post and manage jobs while job seekers can browse jobs an
 
 ##  Live Demo
 
-🔗 Client: https://your-client-url.vercel.app
+🔗 Client: https://nexthire-client.vercel.app
 
-🔗 Server: https://your-server-url.vercel.app
+🔗 Server: https://nexthire-server-m1bk.onrender.com
 
 ---
 
@@ -125,7 +125,7 @@ BETTER_AUTH_URL=http://localhost:3000
 ## Client
 
 ```bash
-git clone https://github.com/yourusername/nexthire-client.git
+git clone https://github.com/mdabgal/nexthire-client.git
 
 cd nexthire-client
 
@@ -139,7 +139,7 @@ npm run dev
 ## Server
 
 ```bash
-git clone https://github.com/yourusername/nexthire-server.git
+git clone https://github.com/mdabgal/nexthire-server.git
 
 cd nexthire-server
 
@@ -150,7 +150,7 @@ npm run dev
 
 ---
 
-# 📸 Main Pages
+#  Main Pages
 
 - Home
 - Jobs
@@ -174,7 +174,6 @@ npm run dev
 - Add Job
 - Edit Job
 - Delete Job
-- Dashboard
 - Applications
 
 ### Job Seeker
@@ -193,12 +192,12 @@ Employer Dashboard includes
 - Total Applications
 - Total Users
 - Dashboard Statistics
-
+- manage jobs
 ---
 
 #  Author
 
-Md Abgal Hossain
+Jannati
 
 Frontend Developer (MERN Stack)
 
@@ -209,8 +208,7 @@ Portfolio:
 https://my-portfolio-ecru-two-25.vercel.app
 
 LinkedIn:
-https://linkedin.com/in/your-linkedin
-
+https://www.linkedin.com/in/jannati-jannati-0203693b4/
 ---
 
  If you like this project, don't forget to give it a star.
