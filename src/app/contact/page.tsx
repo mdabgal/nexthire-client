@@ -9,6 +9,7 @@ import {
   MapPin,
   Clock,
 } from "lucide-react";
+import toast from "react-hot-toast";
 
 export default function ContactPage() {
 
@@ -20,49 +21,82 @@ export default function ContactPage() {
   });
 
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  // const handleSubmit = async (e: React.FormEvent) => {
+  //   e.preventDefault();
 
-    try {
+  //   try {
 
-      const res = await fetch(
-          `${process.env.NEXT_PUBLIC_SERVER_URL}/contacts`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(formData),
-        }
-      );
-
-
-      const data = await res.json();
+  //     const res = await fetch(
+  //         `${process.env.NEXT_PUBLIC_SERVER_URL}/contacts`,
+  //       {
+  //         method: "POST",
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //         },
+  //         body: JSON.stringify(formData),
+  //       }
+  //     );
 
 
-      if (data.success) {
+  //     const data = await res.json();
 
-        alert("Message sent successfully!");
 
-        setFormData({
-          name: "",
-          email: "",
-          subject: "",
-          message: "",
-        });
+  //     if (data.success) {
 
+  //       alert("Message sent successfully!");
+
+  //       setFormData({
+  //         name: "",
+  //         email: "",
+  //         subject: "",
+  //         message: "",
+  //       });
+
+  //     }
+
+
+  //   } catch (error) {
+
+  //     console.log(error);
+  //     alert("Something went wrong!");
+
+  //   }
+  // };
+
+const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
+
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_SERVER_URL}/contacts`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
       }
+    );
 
+    const data = await res.json();
 
-    } catch (error) {
+    if (data.success) {
+      toast.success("Message sent successfully!");
 
-      console.log(error);
-      alert("Something went wrong!");
-
+      setFormData({
+        name: "",
+        email: "",
+        subject: "",
+        message: "",
+      });
+    } else {
+      toast.error(data.message || "Failed to send message!");
     }
-  };
-
-
+  } catch (error) {
+    console.log(error);
+    toast.error("Something went wrong!");
+  }
+};
   return (
     <>
       <Navbar />

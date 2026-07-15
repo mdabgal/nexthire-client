@@ -160,7 +160,21 @@ dark:shadow-none
               {jobs.map((job) => (
                 <div
                   key={job._id}
-                  className="overflow-hidden rounded-2xl border bg-white shadow-md transition hover:shadow-xl dark:border-gray-800 dark:bg-gray-900"
+                 className="
+    overflow-hidden
+    rounded-2xl
+    border
+    border-gray-200
+    bg-white
+    shadow-lg
+    transition-all
+    duration-300
+    hover:-translate-y-1
+    hover:shadow-2xl
+    dark:border-gray-800
+    dark:bg-gray-900
+    dark:shadow-none
+  "
                 >
                   <img
                     src={job.image}

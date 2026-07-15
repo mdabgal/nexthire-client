@@ -1,5 +1,7 @@
 "use client";
 
+import Footer from "@/components/shared/Footer";
+import Navbar from "@/components/shared/Navbar";
 import { useEffect, useState } from "react";
 
 type Application = {
@@ -47,6 +49,10 @@ export default function ApplicationsPage() {
   }
 
   return (
+
+    <>
+
+    <Navbar/>
     <section className="min-h-screen bg-gray-100 p-6 dark:bg-slate-900">
       <div className="mx-auto max-w-7xl">
         <h1 className="mb-8 text-4xl font-bold text-gray-900 dark:text-white">
@@ -122,5 +128,7 @@ export default function ApplicationsPage() {
         </div>
       </div>
     </section>
+<Footer/>
+    </>
   );
 }
