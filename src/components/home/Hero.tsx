@@ -124,7 +124,7 @@ export default function Hero() {
 
         {/* Right Image */}
 
-        <div className="relative hidden lg:block">
+        <div className="relative order-first lg:order-last">
           {/* Animated Background */}
 
           <motion.div
